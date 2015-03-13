@@ -2,7 +2,7 @@
 % 
 % val = functools.map(fn, args)
 %
-% Accept a numeric or cell array of args, and
+% Accept a numeric, struct, or cell array of args, and
 % return the result of applying fn to each of args.
 %
 % Always returns a cell array, so be sure to recast it.
@@ -17,7 +17,7 @@
 % "Is"
 % "Sparta"
 function retval = map(fn, args)
-    was_numeric = isnumeric(args);
+    was_numeric = isnumeric(args) || isstruct(args);
     if was_numeric
         args = num2cell(args);
     end

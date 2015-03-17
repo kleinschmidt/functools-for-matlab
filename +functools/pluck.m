@@ -22,12 +22,21 @@ function [out] = pluck(in, varargin)
 % 
 % but you're not allowed to. :(
 
-if nargin < 1 || ~ isstruct(in)
-    error('Can only pluck from a struct array :)');
+if nargin < 1
+    error('Gotta have something to pluck');
 end
 
-if nargin < 2
-    out = in;
+if ~ isstruct(in)
+    error('Can only pluck from a struct array');
+end
+
+top_field = varargin{1};
+rest_fields = varargin(2:end);
+
+if isempty(rest_fields)
+    % no other levels remaining? return cell array of field entries
+    out = { in.(top_field) }';
 else
-    out = pluck([in.(varargin{1})], varargin{2:end});
+    % recurse
+    out = functools.pluck([in.(top_field)], rest_fields{:});
 end
